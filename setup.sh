@@ -94,5 +94,5 @@ sudo service enclave start
 
 # We can auto-enrol if an environment variable is available.
 if [[ ! -z "${ENCLAVE_ENROLMENT_KEY:-}" ]]; then
-sudo enclave enrol 
+sudo enclave enrol $ENCLAVE_ENROLMENT_KEY
 fi
