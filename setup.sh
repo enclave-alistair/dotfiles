@@ -88,6 +88,6 @@ exit 0
 
 EOF
 
-sudo update-rc.d enclave default
-
+sudo chmod +x /etc/init.d/enclave
+sudo update-rc.d enclave defaults
 sudo service enclave start
