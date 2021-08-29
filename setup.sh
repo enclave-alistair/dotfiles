@@ -11,42 +11,42 @@ cat <<-EOF | sudo tee /etc/init.d/enclave >/dev/null
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
+# Required-Start:    \$remote_fs \$syslog
+# Required-Stop:     \$remote_fs \$syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Start daemon at boot time
 # Description:       Enable service provided by daemon.
 ### END INIT INFO
 
-dir="$HOME"
-name=`basename $0`
-pid_file="/var/run/$name.pid"
-stdout_log="/var/log/$name.log"
-stderr_log="/var/log/$name.err"
+dir="\$HOME"
+name=`basename \$0`
+pid_file="/var/run/\$name.pid"
+stdout_log="/var/log/\$name.log"
+stderr_log="/var/log/\$name.err"
 
 get_pid() {
-    cat "$pid_file"
+    cat "\$pid_file"
 }
 
 is_running() {
-    [ -f "$pid_file" ] && ps -p `get_pid` > /dev/null 2>&1
+    [ -f "\$pid_file" ] && ps -p `get_pid` > /dev/null 2>&1
 }
 
-case "$1" in
+case "\$1" in
     start)
     if is_running; then
         echo "Already started"
     else
-        echo "Starting $name"
-        cd "$dir"
+        echo "Starting \$name"
+        cd "\$dir"
 
-        start-stop-daemon --start  --oknodo --background --user root --make-pidfile --pidfile $pid_file --exec /usr/bin/enclave -- supervisor-service
+        start-stop-daemon --start  --oknodo --background --user root --make-pidfile --pidfile \$pid_file --exec /usr/bin/enclave -- supervisor-service
     fi
     ;;
     stop)
     if true; then
-        echo -n "Stopping $name.."
+        echo -n "Stopping \$name.."
         
         sudo start-stop-daemon --quiet --oknodo --stop --retry 5 \
                                --user root --remove-pidfile --pidfile /run/enclave.pid \
@@ -63,12 +63,12 @@ case "$1" in
     fi
     ;;
     restart)
-    $0 stop
+    \$0 stop
     if is_running; then
         echo "Unable to stop, will not attempt to start"
         exit 1
     fi
-    $0 start
+    \$0 start
     ;;
     status)
     if is_running; then
@@ -79,7 +79,7 @@ case "$1" in
     fi
     ;;
     *)
-    echo "Usage: $0 {start|stop|restart|status}"
+    echo "Usage: \$0 {start|stop|restart|status}"
     exit 1
     ;;
 esac
