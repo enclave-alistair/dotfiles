@@ -91,3 +91,8 @@ EOF
 sudo chmod +x /etc/init.d/enclave
 sudo update-rc.d enclave defaults
 sudo service enclave start
+
+# We can auto-enrol if an environment variable is available.
+if [[ ! -z "${ENCLAVE_ENROLMENT_KEY:-}" ]]; then
+sudo enclave enrol 
+fi
