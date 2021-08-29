@@ -20,7 +20,7 @@ cat <<-EOF | sudo tee /etc/init.d/enclave >/dev/null
 ### END INIT INFO
 
 dir="\$HOME"
-name=`enclave`
+name="enclave"
 pid_file="/var/run/\$name.pid"
 stdout_log="/var/log/\$name.log"
 stderr_log="/var/log/\$name.err"
@@ -41,7 +41,7 @@ case "\$1" in
         echo "Starting \$name"
         cd "\$dir"
 
-        start-stop-daemon --start --oknodo --background --user root --make-pidfile --pidfile \$pid_file --exec /usr/bin/enclave -- supervisor-service
+        sudo start-stop-daemon --start --oknodo --background --user root --make-pidfile --pidfile \$pid_file --exec /usr/bin/enclave -- supervisor-service
     fi
     ;;
     stop)
@@ -49,7 +49,7 @@ case "\$1" in
         echo -n "Stopping \$name.."
         
         sudo start-stop-daemon --quiet --oknodo --stop --retry 5 \\
-                               --user root --remove-pidfile --pidfile /run/enclave.pid \\
+                               --user root --remove-pidfile --pidfile \$pid_file \\
                                --exec /usr/bin/enclave --signal KILL
         
         if is_running; then
